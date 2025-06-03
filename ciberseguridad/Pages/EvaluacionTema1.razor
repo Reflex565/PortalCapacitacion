@@ -1,0 +1,313 @@
+﻿@page "/evaluacion/tema1"
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+@inject ciberseguridad.Data.UsuarioService UsuarioService
+@inject ciberseguridad.Data.EvaluacionService EvaluacionService
+@inject ProtectedSessionStorage SessionStorage
+
+<h2 class="titulo-evaluacion">Evaluación: Ciberseguridad</h2>
+
+@if (calificacionAnterior >= 0)
+{
+    <div class="alerta-calificacion">
+        Ya habías realizado esta evaluación. Obtuviste <strong>@calificacionAnterior de 5</strong>
+    </div>
+}
+<div class="quiz-box">
+    <h5>1. ¿Qué es la ciberseguridad?</h5>
+    @foreach (var opcion in opciones1)
+    {
+        <button class="opcion @(GetClaseBoton(respuesta1, opcion, "b"))" @onclick="() => { if (!bloquear) { respuesta1 = opcion; StateHasChanged(); } }">
+            @textos1[opcion]
+        </button>
+    }
+</div>
+
+<div class="quiz-box">
+    <h5>2. ¿Cuál es uno de los principales objetivos de la ciberseguridad?</h5>
+    @foreach (var opcion in opciones2)
+    {
+        <button class="opcion @(GetClaseBoton(respuesta2, opcion, "c"))" @onclick="() => { if (!bloquear) { respuesta2 = opcion; StateHasChanged(); } }">
+            @textos2[opcion]
+        </button>
+    }
+</div>
+
+<div class="quiz-box">
+    <h5>3. ¿Qué protege la ciberseguridad?</h5>
+    @foreach (var opcion in opciones3)
+    {
+        <button class="opcion @(GetClaseBoton(respuesta3, opcion, "a"))" @onclick="() => { if (!bloquear) { respuesta3 = opcion; StateHasChanged(); } }">
+            @textos3[opcion]
+        </button>
+    }
+</div>
+
+<div class="quiz-box">
+    <h5>4. ¿Cuál de estos no es un principio clave de la ciberseguridad?</h5>
+    @foreach (var opcion in opciones4)
+    {
+        <button class="opcion @(GetClaseBoton(respuesta4, opcion, "b"))" @onclick="() => { if (!bloquear) { respuesta4 = opcion; StateHasChanged(); } }">
+            @textos4[opcion]
+        </button>
+    }
+</div>
+
+<div class="quiz-box">
+    <h5>5. ¿Qué tipo de amenazas busca prevenir la ciberseguridad?</h5>
+    @foreach (var opcion in opciones5)
+    {
+        <button class="opcion @(GetClaseBoton(respuesta5, opcion, "b"))" @onclick="() => { if (!bloquear) { respuesta5 = opcion; StateHasChanged(); } }">
+            @textos5[opcion]
+        </button>
+    }
+</div>
+
+<div class="botones-navegacion">
+    <button class="btn-navegacion" @onclick="VolverAlTema">&larr; Volver al Tema</button>
+    <button class="btn-navegacion" @onclick="VerificarRespuestas" disabled="@(!TodoRespondido || bloquear)" hidden="@bloquear">Verificar Respuestas</button>
+    <button class="btn-navegacion" @onclick="SiguienteTema">Siguiente Tema &rarr;</button>
+</div>
+
+@code {
+    int usuarioId;
+    int calificacionAnterior = -1;
+    bool verificando = false;
+    bool bloquear = false;
+    string respuesta1 = "", respuesta2 = "", respuesta3 = "", respuesta4 = "", respuesta5 = "";
+
+    bool TodoRespondido =>
+        !string.IsNullOrEmpty(respuesta1) &&
+        !string.IsNullOrEmpty(respuesta2) &&
+        !string.IsNullOrEmpty(respuesta3) &&
+        !string.IsNullOrEmpty(respuesta4) &&
+        !string.IsNullOrEmpty(respuesta5);
+
+    Dictionary<string, string> textos1 = new() {
+        { "a", "Un antivirus para celulares" },
+        { "b", "La protección de sistemas, redes y datos frente a ataques digitales" },
+        { "c", "El uso de redes sociales de forma segura" }
+    };
+    Dictionary<string, string> textos2 = new() {
+        { "a", "Aumentar la velocidad del Internet" },
+        { "b", "Mejorar el diseño gráfico" },
+        { "c", "Proteger la confidencialidad, integridad y disponibilidad" }
+    };
+    Dictionary<string, string> textos3 = new() {
+        { "a", "Sistemas, redes y datos digitales" },
+        { "b", "Únicamente dispositivos móviles" },
+        { "c", "Solo archivos multimedia" }
+    };
+    Dictionary<string, string> textos4 = new() {
+        { "a", "Integridad" },
+        { "b", "Publicidad" },
+        { "c", "Confidencialidad" }
+    };
+    Dictionary<string, string> textos5 = new() {
+        { "a", "Amenazas naturales como terremotos" },
+        { "b", "Amenazas informáticas como malware, virus y ataques cibernéticos" },
+        { "c", "Problemas mecánicos en equipos de oficina" }
+    };
+
+    List<string> opciones1 = new() { "a", "b", "c" };
+    List<string> opciones2 = new() { "a", "b", "c" };
+    List<string> opciones3 = new() { "a", "b", "c" };
+    List<string> opciones4 = new() { "a", "b", "c" };
+    List<string> opciones5 = new() { "a", "b", "c" };
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var resultado = await SessionStorage.GetAsync<Usuario>("usuario_logeado");
+            if (resultado.Success && resultado.Value != null)
+            {
+                usuarioId = resultado.Value.Id;
+                await CargarRespuestasAnteriores("Tema 1");
+            }
+            else
+            {
+                await JS.InvokeVoidAsync("alert", "No se encontró sesión activa");
+                Navigation.NavigateTo("/login");
+            }
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("console.error", $"Error al obtener sesión: {ex.Message}");
+        }
+    }
+
+    async Task CargarRespuestasAnteriores(string tema)
+    {
+        try
+        {
+            var resultado = await EvaluacionService.ObtenerResultadoPorTema(usuarioId, tema);
+            if (resultado != null)
+            {
+                var respuestas = await EvaluacionService.ObtenerRespuestasPorResultado(resultado.Id);
+                foreach (var r in respuestas)
+                {
+                    switch (r.PreguntaNumero)
+                    {
+                        case 1: respuesta1 = r.RespuestaSeleccionada; break;
+                        case 2: respuesta2 = r.RespuestaSeleccionada; break;
+                        case 3: respuesta3 = r.RespuestaSeleccionada; break;
+                        case 4: respuesta4 = r.RespuestaSeleccionada; break;
+                        case 5: respuesta5 = r.RespuestaSeleccionada; break;
+                    }
+                }
+                calificacionAnterior = resultado.Calificacion;
+                bloquear = true;
+                verificando = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("console.error", $"Error al cargar respuestas anteriores: {ex.Message}");
+        }
+    }
+
+    string GetClaseBoton(string respuesta, string opcion, string correcta)
+    {
+        if (!verificando)
+            return respuesta == opcion ? "seleccionada" : "";
+
+        if (respuesta == opcion && opcion == correcta)
+            return "correcto";
+
+        if (respuesta == opcion && opcion != correcta)
+            return "incorrecto";
+
+        return "";
+    }
+
+    void VolverAlTema() => Navigation.NavigateTo("/temario/tema1");
+    void SiguienteTema() => Navigation.NavigateTo("/evaluacion/tema2");
+
+    async Task VerificarRespuestas()
+    {
+        verificando = true;
+        bloquear = true;
+        int puntaje = 0;
+        if (respuesta1 == "b") puntaje++;
+        if (respuesta2 == "c") puntaje++;
+        if (respuesta3 == "a") puntaje++;
+        if (respuesta4 == "b") puntaje++;
+        if (respuesta5 == "b") puntaje++;
+
+        await JS.InvokeVoidAsync("alert", $"Tu puntaje es: {puntaje} de 5");
+
+        try
+        {
+            var resultado = new ResultadoEvaluacion
+            {
+                UsuarioId = usuarioId,
+                Tema = "Tema 1",
+                Calificacion = puntaje
+            };
+
+            int resultadoId = await EvaluacionService.GuardarResultadoEvaluacion(resultado);
+
+            var respuestas = new List<RespuestaEvaluacion>
+            {
+                new() { ResultadoId = resultadoId, PreguntaNumero = 1, RespuestaSeleccionada = respuesta1 },
+                new() { ResultadoId = resultadoId, PreguntaNumero = 2, RespuestaSeleccionada = respuesta2 },
+                new() { ResultadoId = resultadoId, PreguntaNumero = 3, RespuestaSeleccionada = respuesta3 },
+                new() { ResultadoId = resultadoId, PreguntaNumero = 4, RespuestaSeleccionada = respuesta4 },
+                new() { ResultadoId = resultadoId, PreguntaNumero = 5, RespuestaSeleccionada = respuesta5 },
+            };
+
+            await EvaluacionService.GuardarRespuestas(respuestas);
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("console.error", $"Error al guardar resultados: {ex.Message}");
+        }
+    }
+}
+
+
+
+<style>
+    .titulo-evaluacion {
+        text-align: center;
+        margin: 2rem 0 1rem 0;
+        color: #1a4faa;
+        font-weight: bold;
+    }
+
+    .quiz-box {
+        background-color: rgba(255, 255, 255, 0.95);
+        padding: 1.5rem;
+        margin: 1.2rem auto;
+        border-left: 5px solid #1a4faa;
+        border-radius: 10px;
+        max-width: 850px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    }
+
+        .quiz-box h5 {
+            margin-bottom: 1rem;
+            color: #0b3d91;
+        }
+
+    .opcion {
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding: 10px 15px;
+        margin: 0.3rem 0;
+        border: none;
+        border-radius: 6px;
+        background-color: #f2f2f2;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+
+        .opcion:hover {
+            background-color: #dce8ff;
+            cursor: pointer;
+        }
+
+    .seleccionada {
+        background-color: #cce5ff !important;
+        border-left: 6px solid #339af0;
+    }
+
+    .correcto {
+        background-color: #c6f6d5 !important;
+        border-left: 6px solid #2e8b57;
+    }
+
+    .incorrecto {
+        background-color: #ffe0e0 !important;
+        border-left: 6px solid #cc0000;
+    }
+
+    .botones-navegacion {
+        display: flex;
+        justify-content: space-between;
+        margin: 2rem auto;
+        max-width: 850px;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .btn-navegacion {
+        padding: 0.7rem 1.4rem;
+        background-color: #1a4faa;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        min-width: 150px;
+    }
+
+        .btn-navegacion:hover {
+            background-color: #123b77;
+        }
+</style>

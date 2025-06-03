@@ -1,0 +1,67 @@
+﻿@page "/login"
+@using System.ComponentModel.DataAnnotations
+@inject NavigationManager Navigation
+@inject ciberseguridad.Data.UsuarioService UsuarioService
+@inject ciberseguridad.Services.AuthService AuthService
+@inject AuthenticationStateProvider AuthProvider
+
+
+<EditForm Model="modeloLogin" OnValidSubmit="ProcesarLogin">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="formulario">
+        <h3 class="titulo">Iniciar Sesión</h3>
+        <div class="form-group">
+            @if (!string.IsNullOrEmpty(error))
+            {
+                <div class="validation-message">@error</div>
+            }
+            <label>Correo:</label>
+            <InputText class="form-control" @bind-Value="modeloLogin.Correo" />
+        </div>
+        <div class="form-group">
+            <label>Contraseña:</label>
+            <InputText class="form-control" @bind-Value="modeloLogin.Password" type="password" />
+        </div>
+        <button class="btn btn-primary mt-3" disabled="@(string.IsNullOrEmpty(modeloLogin.Correo) || string.IsNullOrEmpty(modeloLogin.Password))">Acceder</button>
+        
+    </div>
+</EditForm>
+
+@code {
+    private ModeloLogin modeloLogin = new();
+    private string error = string.Empty;
+
+    private async Task ProcesarLogin()
+    {
+        var usuario = await UsuarioService.ObtenerUsuarioPorCredenciales(modeloLogin.Correo, modeloLogin.Password);
+        if (usuario != null)
+        {
+            await AuthService.Login(usuario);
+
+            if (AuthProvider is CustomAuthProvider customProvider)
+            {
+                customProvider.NotificarCambio();
+            }
+
+            Navigation.NavigateTo("/", true); // 🔄 recarga completa
+
+        }
+        else
+        {
+            error = "Credenciales incorrectas";
+        }
+    }
+
+    public class ModeloLogin
+    {
+        [Required(ErrorMessage = "Correo requerido")]
+        [EmailAddress(ErrorMessage = "Correo inválido")]
+        public string Correo { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Contraseña requerida")]
+        public string Password { get; set; } = string.Empty;
+    }
+}
+

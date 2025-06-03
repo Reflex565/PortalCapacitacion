@@ -1,0 +1,207 @@
+﻿@page "/temario/tema1"
+@inject NavigationManager Navigation
+
+<h2 class="titulo-tema">Tema 1: Ciberseguridad</h2>
+
+<div class="seccion">
+    <p>
+        La <strong>ciberseguridad</strong> se refiere a cualquier tecnología, práctica y política para prevenir los ataques cibernéticos o mitigar su impacto.
+        Su objetivo principal es proteger los <strong>dispositivos, aplicaciones, sistemas, datos, activos financieros</strong> y a las <strong>personas</strong> contra amenazas como el ransomware, el phishing, el malware, el robo de datos y otras ciberamenazas.
+    </p>
+    <p>
+        La ciberseguridad es crucial porque los <strong>ataques cibernéticos</strong> pueden perturbar, dañar o destruir negocios, comunidades y vidas.
+        Sus consecuencias incluyen el robo de identidad, extorsión, pérdida de datos críticos, interrupciones operativas, pérdida de negocios, clientes y hasta el cierre de empresas.
+    </p>
+    <p>
+        Se estima que el <strong>cibercrimen costará 10.5 billones de dólares anualmente para el año 2025</strong>. Este costo continúa aumentando a medida que los <strong>ciberdelincuentes se vuelven más sofisticados</strong>.
+    </p>
+    <p>
+        Uno de los mayores retos es la <strong>naturaleza en constante evolución del panorama tecnológico</strong>, lo que permite que las amenazas también evolucionen.
+        Nuevas tecnologías ofrecen grandes ventajas, pero también oportunidades para ataques cada vez más sofisticados.
+    </p>
+</div>
+
+<div class="seccion">
+    <h4>Amenazas Comunes en Ciberseguridad</h4>
+
+    <h5>1. Malware</h5>
+    <p>
+        <strong>Malware</strong> es software malicioso (como ransomware, troyanos o spyware) diseñado para dañar sistemas o a sus usuarios.
+        Los atacantes lo utilizan para:
+    </p>
+    <ul>
+        <li>Secuestrar dispositivos o redes por rescates económicos.</li>
+        <li>Obtener acceso no autorizado a datos confidenciales.</li>
+        <li>Robar credenciales, tarjetas de crédito o propiedad intelectual.</li>
+        <li>Interrumpir operaciones críticas de empresas o gobiernos.</li>
+    </ul>
+    <p>
+        Hoy en día, los ataques de malware se dirigen más a <strong>organizaciones</strong> que a individuos, por su mayor valor en información sensible.
+    </p>
+
+    <h5>2. Phishing</h5>
+    <p>
+        El <strong>phishing</strong> es una técnica de <em>ingeniería social</em> que usa mensajes engañosos para que la víctima realice acciones que comprometan su seguridad,
+        como hacer clic en enlaces, abrir archivos o realizar pagos.
+    </p>
+    <p>
+        Usualmente el atacante se hace pasar por una persona de confianza (jefe, colega, institución) y logra que la víctima actúe sin sospechar.
+    </p>
+
+    <h5>3. Amenazas Internas</h5>
+    <p>
+        Las <strong>amenazas internas</strong> provienen de usuarios autorizados (empleados, contratistas) que, voluntaria o involuntariamente, abusan de sus permisos.
+        Son más difíciles de detectar porque parecen actividades normales y no son bloqueadas por antivirus o firewalls.
+    </p>
+</div>
+
+<div class="seccion">
+    <h4>Mejores Prácticas y Tecnologías Clave</h4>
+
+    <h5>1. Herramientas de Seguridad</h5>
+    <p>
+        Soluciones como <strong>cifrado</strong> y <strong>prevención de pérdida de datos (DLP)</strong> ayudan a prevenir y mitigar ataques.
+        Por ejemplo, DLP detecta intentos de robo de información, mientras que el cifrado vuelve inútil la información robada.
+    </p>
+
+    <h5>2. Detección y Respuesta</h5>
+    <p>
+        Tecnologías basadas en inteligencia artificial y análisis de datos permiten detectar y responder a amenazas en tiempo real.
+        Entre ellas se encuentran:
+    </p>
+    <ul>
+        <li><strong>SIEM</strong>: Gestión de eventos e información de seguridad.</li>
+        <li><strong>SOAR</strong>: Orquestación, automatización y respuesta.</li>
+        <li><strong>EDR</strong>: Detección y respuesta en endpoints.</li>
+    </ul>
+    <p>
+        Estas soluciones forman parte de planes formales de <strong>respuesta a incidentes</strong>.
+    </p>
+
+    <h5>3. Recuperación ante Desastres</h5>
+    <p>
+        Las capacidades de recuperación permiten restaurar la continuidad del negocio. Por ejemplo, se puede conmutar hacia una copia de seguridad alojada remotamente
+        para continuar operando después de un ataque sin pagar rescates.
+    </p>
+</div>
+
+<div class="seccion">
+    <h4>Prevención de Ataques</h4>
+    <ul>
+        <li>Uso de <strong>contraseñas complejas</strong> y únicas.</li>
+        <li>Aplicación continua de <strong>actualizaciones y parches</strong>.</li>
+        <li>Restricción de accesos según el rol del usuario.</li>
+        <li>Monitoreo de actividad en tiempo real.</li>
+        <li>Desarrollo de un <strong>plan de respuesta</strong> efectivo.</li>
+    </ul>
+</div>
+
+<div class="seccion">
+    <h4>Conclusión</h4>
+    <p>
+        La ciberseguridad es una responsabilidad constante. No basta con instalar software, sino que se necesita una cultura de <strong>prevención, concientización y respuesta</strong>.
+        Solo así se puede afrontar el complejo panorama digital que enfrentan las empresas, gobiernos e individuos en la actualidad.
+    </p>
+</div>
+
+<div class="seccion-video">
+    <h5>Tutorial en video:</h5>
+    <div class="ratio ratio-16x9">
+        <iframe src="https://www.youtube.com/embed/3G8yJaudGC0" title="Ciberseguridad" allowfullscreen></iframe>
+    </div>
+</div>
+
+<div class="seccion-evaluacion">
+    <h5>¿Listo para evaluar lo aprendido?</h5>
+    <button class="btn-evaluacion" @onclick="IrAEvaluacion">
+        Realizar Evaluación
+    </button>
+</div>
+
+
+@code {
+    private void IrAEvaluacion()
+    {
+        Navigation.NavigateTo("/evaluacion/tema1");
+    }
+}
+
+<style>
+    .titulo-tema {
+        text-align: center;
+        color: #1a4faa;
+        margin-top: 20px;
+        font-weight: bold;
+    }
+
+    .seccion {
+        background-color: rgba(240, 248, 255, 0.9);
+        padding: 1.5rem;
+        margin: 1rem auto;
+        border-left: 5px solid #1a4faa;
+        border-radius: 8px;
+        max-width: 900px;
+        text-align: justify;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+    }
+
+        .seccion h4 {
+            margin-bottom: 0.8rem;
+            color: #0b3d91;
+        }
+
+        .seccion ul {
+            margin-left: 1rem;
+            padding-left: 1rem;
+        }
+
+    .seccion-video {
+        background-color: rgba(221, 255, 221, 0.9);
+        padding: 1.5rem;
+        margin: 1rem auto;
+        border-left: 5px solid #2e8b57;
+        border-radius: 8px;
+        max-width: 900px;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+    }
+
+        .seccion-video h5 {
+            margin-bottom: 1rem;
+            text-align: left;
+            color: #2e8b57;
+        }
+
+    .seccion-evaluacion {
+        background-color: rgba(255, 255, 240, 0.9);
+        padding: 1.5rem;
+        margin: 2rem auto;
+        border-left: 5px solid #ffcc00;
+        border-radius: 8px;
+        max-width: 900px;
+        text-align: center;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .btn-evaluacion {
+        background-color: #ffcc00;
+        color: #000;
+        border: none;
+        padding: 0.7rem 1.5rem;
+        border-radius: 6px;
+        font-weight: bold;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        .btn-evaluacion:hover {
+            background-color: #e6b800;
+        }
+
+    iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        border-radius: 6px;
+    }
+</style>

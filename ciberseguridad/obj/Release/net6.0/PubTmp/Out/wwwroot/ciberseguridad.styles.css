@@ -1,0 +1,206 @@
+/* _content/ciberseguridad/Pages/Index.razor.rz.scp.css */
+body[b-ee944g0jq2] {
+    /*  agregar estilos generales para el body aquí si quieres */
+}
+
+.contenedor-inicio[b-ee944g0jq2] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    text-align: center;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.titulo-centrado[b-ee944g0jq2] {
+    font-size: 3rem;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.subtitulo[b-ee944g0jq2] {
+    font-size: 1.5rem;
+    color: #34495e;
+    margin-bottom: 40px;
+}
+
+.contenido[b-ee944g0jq2] {
+    text-align: left;
+    margin: 20px;
+}
+.encabezado[b-ee944g0jq2] {
+    background: linear-gradient(#e6b7ff); /* Azul degradado */
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+    color: black;
+    text-align: center;
+}
+    .titulo[b-ee944g0jq2] {
+    text-align: center;
+    font-size: 3rem;
+    color: #1f2937;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(to right, #e0f7fa, #ffffff);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    margin-bottom: 10px;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.subtitulo[b-ee944g0jq2] {
+    text-align: center;
+    font-size: 1.8rem;
+    color: #374151;
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+.contenido[b-ee944g0jq2] {
+    text-align: left;
+    padding: 1.5rem;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #333;
+    font-family: 'Segoe UI', sans-serif;
+}
+/* _content/ciberseguridad/Shared/MainLayout.razor.rz.scp.css */
+.page[b-xisdm8vf2d] {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+main[b-xisdm8vf2d] {
+    flex: 1;
+}
+
+.sidebar[b-xisdm8vf2d] {
+    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+}
+
+.top-row[b-xisdm8vf2d] {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #d6d5d5;
+    justify-content: flex-end;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+}
+
+    .top-row[b-xisdm8vf2d]  a, .top-row .btn-link[b-xisdm8vf2d] {
+        white-space: nowrap;
+        margin-left: 1.5rem;
+    }
+
+    .top-row a:first-child[b-xisdm8vf2d] {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+@media (max-width: 640.98px) {
+    .top-row:not(.auth)[b-xisdm8vf2d] {
+        display: none;
+    }
+
+    .top-row.auth[b-xisdm8vf2d] {
+        justify-content: space-between;
+    }
+
+    .top-row a[b-xisdm8vf2d], .top-row .btn-link[b-xisdm8vf2d] {
+        margin-left: 0;
+    }
+}
+
+@media (min-width: 641px) {
+    .page[b-xisdm8vf2d] {
+        flex-direction: row;
+    }
+
+    .sidebar[b-xisdm8vf2d] {
+        width: 250px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+
+    .top-row[b-xisdm8vf2d] {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    .top-row[b-xisdm8vf2d], article[b-xisdm8vf2d] {
+        padding-left: 2rem !important;
+        padding-right: 1.5rem !important;
+    }
+}
+/* _content/ciberseguridad/Shared/NavMenu.razor.rz.scp.css */
+.navbar-toggler[b-3m6ez4cjt0] {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.top-row[b-3m6ez4cjt0] {
+    height: 3.5rem;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.navbar-brand[b-3m6ez4cjt0] {
+    font-size: 1.1rem;
+}
+
+.oi[b-3m6ez4cjt0] {
+    width: 2rem;
+    font-size: 1.1rem;
+    vertical-align: text-top;
+    top: -2px;
+}
+
+.nav-item[b-3m6ez4cjt0] {
+    font-size: 0.9rem;
+    padding-bottom: 0.5rem;
+}
+
+    .nav-item:first-of-type[b-3m6ez4cjt0] {
+        padding-top: 1rem;
+    }
+
+    .nav-item:last-of-type[b-3m6ez4cjt0] {
+        padding-bottom: 1rem;
+    }
+
+    .nav-item[b-3m6ez4cjt0]  a {
+        color: #d7d7d7;
+        border-radius: 4px;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        line-height: 3rem;
+    }
+
+.nav-item[b-3m6ez4cjt0]  a.active {
+    background-color: rgba(255,255,255,0.25);
+    color: white;
+}
+
+.nav-item[b-3m6ez4cjt0]  a:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+}
+
+@media (min-width: 641px) {
+    .navbar-toggler[b-3m6ez4cjt0] {
+        display: none;
+    }
+
+    .collapse[b-3m6ez4cjt0] {
+        /* Never collapse the sidebar for wide screens */
+        display: block;
+    }
+}

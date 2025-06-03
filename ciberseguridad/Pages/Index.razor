@@ -1,0 +1,97 @@
+@page "/"
+
+<h1 class="titulo-bienvenida">¡Bienvenido al Portal de Ciberseguridad!</h1>
+
+<div class="contenedor-index">
+    <div class="cuadro-index">
+        <h4>Fortalece tus conocimientos y protege la información de la empresa</h4>
+        <p>
+            En este curso de ciberseguridad obtendrás conocimientos sólidos para proteger tu información y actuar con confianza ante amenazas digitales.
+            A lo largo de este curso, aprenderás a:
+        </p>
+        <ul>
+            <li>Comprender los fundamentos de la ciberseguridad</li>
+            <li>Reconocer y prevenir ataques de phishing</li>
+            <li>Aplicar buenas prácticas para la protección de datos</li>
+        </ul>
+    </div>
+
+    <div class="cuadro-index">
+        <h4>Importancia del curso</h4>
+        <p>
+            Con el auge de la tecnología, los riesgos cibernéticos se han multiplicado. Este curso busca brindarte herramientas y estrategias para que seas parte activa en la protección de la información personal y organizacional.
+        </p>
+    </div>
+
+    <div class="cuadro-index">
+        <h4>¿Listo para comenzar?</h4>
+        <p>
+            Dirígete al menú lateral y selecciona la sección <strong>Temario</strong> para iniciar con los temas.
+        </p>
+    </div>
+</div>
+
+<style>
+    .titulo-bienvenida {
+        text-align: center;
+        margin-top: 2rem;
+        color: #1a4faa;
+    }
+
+    .contenedor-index {
+        max-width: 900px;
+        margin: auto;
+        padding: 1rem;
+    }
+
+    .cuadro-index {
+        background-color: rgba(230, 240, 255, 0.9);
+        padding: 1.5rem;
+        margin: 1rem 0;
+        border-left: 6px solid #007acc;
+        border-radius: 10px;
+        box-shadow: 0 0 8px rgba(0,0,0,0.05);
+        text-align: justify;
+    }
+
+        .cuadro-index h4 {
+            color: #1a4faa;
+            margin-bottom: 0.8rem;
+        }
+
+        .cuadro-index ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+        }
+
+        .cuadro-index li {
+            margin-bottom: 0.5rem;
+        }
+</style>
+
+
+
+
+@code {
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationStateTask { get; set; }
+
+    [Inject]
+    private NavigationManager? Navigation { get; set; }
+
+    [Inject]
+    private AuthService? AuthService { get; set; }
+
+    [Inject]
+    private AuthenticationStateProvider? AuthProvider { get; set; }
+
+
+    private async Task CerrarSesion()
+    {
+        await AuthService!.Logout();
+        ((CustomAuthProvider)AuthProvider!).NotificarCambio();
+        Navigation!.NavigateTo("/");
+
+    }
+
+}

@@ -1,0 +1,70 @@
+﻿@page "/hjque-es-ciberseguridad"
+@layout MainLayout
+
+<h1>¿Qué es la Ciberseguridad?</h1>
+
+<p>
+    La ciberseguridad es el conjunto de prácticas, tecnologías y procesos diseñados para proteger sistemas, redes y datos de ataques, daños o accesos no autorizados.
+</p>
+
+<h2>Importancia</h2>
+<ul>
+    <li>Protege información confidencial.</li>
+    <li>Evita fraudes, robos y pérdidas de datos.</li>
+    <li>Ayuda a mantener la reputación de las organizaciones.</li>
+</ul>
+
+<h2>Video explicativo</h2>
+<iframe width="560" height="315"
+        src="https://www.youtube.com/embed/MX9FdH1C3F4"
+        title="¿Qué es la ciberseguridad?"
+        frameborder="0" allowfullscreen>
+</iframe>
+
+<h2 class="mt-4">Actividad: Pregunta rápida</h2>
+
+<p><strong>¿Cuál de las siguientes opciones describe mejor la ciberseguridad?</strong></p>
+
+@foreach (var opcion in opciones)
+{
+    <div>
+        <input type="radio" id="@opcion" name="respuesta" value="@opcion"
+               @onchange="SeleccionarRespuesta" checked="@(respuestaSeleccionada == opcion)" />
+        <label for="@opcion">@opcion</label>
+    </div>
+}
+
+<button class="btn btn-primary mt-3" @onclick="ValidarQuiz">Verificar respuesta</button>
+
+@if (respuestaCorrecta != null)
+{
+    <div class="alert @(respuestaCorrecta == true ? "alert-success" : "alert-danger") mt-3">
+        @(respuestaCorrecta == true
+            ? "¡Correcto! La ciberseguridad protege sistemas y datos."
+            : "Incorrecto. Inténtalo de nuevo.")
+    </div>
+}
+
+@code {
+    private string[] opciones = new[]
+    {
+        "Una técnica de hackeo para obtener contraseñas",
+        "Una práctica para compartir archivos en línea",
+        "La protección de sistemas y datos frente a amenazas digitales",
+        "Un tipo de antivirus gratuito"
+    };
+
+    private string? respuestaSeleccionada;
+    private bool? respuestaCorrecta;
+
+    void SeleccionarRespuesta(ChangeEventArgs e)
+    {
+        respuestaSeleccionada = e.Value?.ToString();
+    }
+
+    void ValidarQuiz()
+    {
+        respuestaCorrecta = (respuestaSeleccionada == "La protección de sistemas y datos frente a amenazas digitales");
+    }
+}
+

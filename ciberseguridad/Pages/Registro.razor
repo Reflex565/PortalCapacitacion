@@ -1,0 +1,220 @@
+﻿@page "/registro"
+@using System.ComponentModel.DataAnnotations
+@inject NavigationManager Navigation
+@inject ciberseguridad.Data.UsuarioService UsuarioService
+@inject IJSRuntime JS
+
+<EditForm Model="usuario" OnValidSubmit="RegistrarUsuario">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="formulario">
+        <h3 class="titulo">Registro de Usuario</h3>
+
+        <!-- Nombre -->
+        <div class="form-group">
+            <label>Nombre:</label>
+            <InputText class="@ClaseNombre"
+                       @bind-Value="usuario.Nombre"
+                       @oninput="@((ChangeEventArgs e) => ValidarNombre(e))" />
+            @if (!IsNombreValido)
+            {
+                <span class="text-danger">Solo letras permitidas.</span>
+            }
+        </div>
+
+        <!-- Apellido Paterno -->
+        <div class="form-group">
+            <label>Apellido Paterno:</label>
+            <InputText class="@ClaseApellidoP"
+                       @bind-Value="usuario.ApellidoPaterno"
+                       @oninput="@((ChangeEventArgs e) => ValidarApellidoP(e))" />
+            @if (!IsApellidoPValido)
+            {
+                <span class="text-danger">Solo letras permitidas.</span>
+            }
+        </div>
+
+        <!-- Apellido Materno -->
+        <div class="form-group">
+            <label>Apellido Materno:</label>
+            <InputText class="@ClaseApellidoM"
+                       @bind-Value="usuario.ApellidoMaterno"
+                       @oninput="@((ChangeEventArgs e) => ValidarApellidoM(e))" />
+            @if (!IsApellidoMValido)
+            {
+                <span class="text-danger">Solo letras permitidas.</span>
+            }
+        </div>
+
+        
+
+        <!-- Teléfono -->
+        <div class="form-group">
+            <label>Teléfono:</label>
+            <InputText class="@ClaseTelefono"
+                       @bind-Value="usuario.Telefono"
+                       @oninput="@((ChangeEventArgs e) => FormatoTelefono(e))" />
+            @if (!IsTelefonoValido)
+            {
+                <span class="text-danger">Formato: 000-000-0000</span>
+            }
+        </div>
+        <!-- Correo -->
+        <div class="form-group">
+            <label>Correo:</label>
+            <InputText class="@ClaseCorreo"
+                       @bind-Value="usuario.Correo"
+                       @oninput="@((ChangeEventArgs e) => ValidarCorreo(e))" />
+            @if (!IsCorreoValido)
+            {
+                <span class="text-danger">Correo inválido.</span>
+            }
+        </div>
+        <!-- Contraseña -->
+        <div class="form-group">
+            <label>Contraseña:</label>
+            <InputText type="password" class="@ClasePassword"
+                       @bind-Value="usuario.Password"
+                       @oninput="@((ChangeEventArgs e) => ValidarPassword(e))" />
+            @if (!IsPasswordValido)
+            {
+                <span class="text-danger">Mínimo 8 caracteres.</span>
+            }
+        </div>
+
+        <button type="submit" class="btn btn-primary" disabled="@(!FormularioValido)">Registrarse</button>
+    </div>
+</EditForm>
+
+<style>
+    .is-invalid {
+        border: 2px solid red !important;
+    }
+
+    .text-danger {
+        color: red;
+        font-size: 0.9rem;
+    }
+
+    .formulario {
+        max-width: 500px;
+        margin: auto;
+        padding: 1.5rem;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.5rem;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .titulo {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    button {
+        width: 100%;
+        padding: 0.6rem;
+        background-color: #007bff;
+        border: none;
+        color: white;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+        button:disabled {
+            background-color: #aaa;
+        }
+</style>
+
+@code {
+    Usuario usuario = new();
+
+    bool IsNombreValido = true;
+    bool IsApellidoPValido = true;
+    bool IsApellidoMValido = true;
+    bool IsCorreoValido = true;
+    bool IsTelefonoValido = true;
+    bool IsPasswordValido = true;
+
+    string ClaseNombre => IsNombreValido ? "form-control" : "form-control is-invalid";
+    string ClaseApellidoP => IsApellidoPValido ? "form-control" : "form-control is-invalid";
+    string ClaseApellidoM => IsApellidoMValido ? "form-control" : "form-control is-invalid";
+    string ClaseCorreo => IsCorreoValido ? "form-control" : "form-control is-invalid";
+    string ClaseTelefono => IsTelefonoValido ? "form-control" : "form-control is-invalid";
+    string ClasePassword => IsPasswordValido ? "form-control" : "form-control is-invalid";
+
+    bool FormularioValido =>
+        IsNombreValido && IsApellidoPValido && IsApellidoMValido && IsCorreoValido && IsTelefonoValido && IsPasswordValido;
+
+    void ValidarNombre(ChangeEventArgs e)
+    {
+        string valor = e.Value?.ToString() ?? "";
+        IsNombreValido = System.Text.RegularExpressions.Regex.IsMatch(valor, @"^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$");
+        usuario.Nombre = valor;
+    }
+
+    void ValidarApellidoP(ChangeEventArgs e)
+    {
+        string valor = e.Value?.ToString() ?? "";
+        IsApellidoPValido = System.Text.RegularExpressions.Regex.IsMatch(valor, @"^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$");
+        usuario.ApellidoPaterno = valor;
+    }
+
+    void ValidarApellidoM(ChangeEventArgs e)
+    {
+        string valor = e.Value?.ToString() ?? "";
+        IsApellidoMValido = System.Text.RegularExpressions.Regex.IsMatch(valor, @"^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$");
+        usuario.ApellidoMaterno = valor;
+    }
+
+    void ValidarCorreo(ChangeEventArgs e)
+    {
+        string valor = e.Value?.ToString() ?? "";
+        IsCorreoValido = System.Text.RegularExpressions.Regex.IsMatch(valor, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+        usuario.Correo = valor;
+    }
+
+    void FormatoTelefono(ChangeEventArgs e)
+    {
+        string valor = new string((e.Value?.ToString() ?? "").Where(char.IsDigit).ToArray());
+
+        if (valor.Length >= 10)
+            valor = valor.Substring(0, 10);
+
+        if (valor.Length >= 7)
+            usuario.Telefono = $"{valor.Substring(0, 3)}-{valor.Substring(3, 3)}-{valor.Substring(6)}";
+        else if (valor.Length >= 4)
+            usuario.Telefono = $"{valor.Substring(0, 3)}-{valor.Substring(3)}";
+        else
+            usuario.Telefono = valor;
+
+        IsTelefonoValido = System.Text.RegularExpressions.Regex.IsMatch(usuario.Telefono, @"^\d{3}-\d{3}-\d{4}$");
+    }
+
+    void ValidarPassword(ChangeEventArgs e)
+    {
+        string valor = e.Value?.ToString() ?? "";
+        IsPasswordValido = valor.Length >= 8;
+        usuario.Password = valor;
+    }
+
+    async Task RegistrarUsuario()
+    {
+        if (FormularioValido)
+        {
+            await UsuarioService.RegistrarUsuario(usuario);
+            Navigation.NavigateTo("/login");
+        }
+    }
+}

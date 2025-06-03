@@ -1,0 +1,65 @@
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager Navigation
+@inject ciberseguridad.Services.AuthService AuthService
+
+<ul class="nav flex-column">
+    <li class="nav-item">
+        <a class="nav-link text-white" href="/">Inicio</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-white" href="/sobre">Sobre nosotros</a>
+    </li>
+
+    <AuthorizeView>
+        <Authorized>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="javascript:void(0)" @onclick="ToggleTemario">Temario ▾</a>
+
+                @if (mostrarSubtemas)
+                {
+                    <ul class="nav flex-column ms-3">
+                        <li class="nav-item"><a class="nav-link text-white" href="/temario/tema1">Ciberseguridad</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="/temario/tema2">Phishing</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="/temario/tema3">Hácking</a></li>
+                    </ul>
+                }
+            </li>
+            <li class="nav-item mt-3 text-white text-center">
+                <strong>@context.User.Identity?.Name</strong>
+            </li>
+            <li class="nav-item text-center">
+                <button class="btn btn-danger mt-2" @onclick="Logout">Cerrar sesión</button>
+            </li>
+        </Authorized>
+        <NotAuthorized>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/login">Iniciar sesión</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/registro">Registrarse</a>
+            </li>
+        </NotAuthorized>
+    </AuthorizeView>
+</ul>
+
+@code {
+    private bool mostrarSubtemas = false;
+
+    private void ToggleTemario()
+    {
+        mostrarSubtemas = !mostrarSubtemas;
+    }
+
+    private async Task Logout()
+    {
+        await AuthService.Logout();
+
+        if (AuthenticationStateProvider is ciberseguridad.Services.CustomAuthProvider customProvider)
+        {
+            customProvider.NotificarCambio();
+        }
+
+        Navigation.NavigateTo("/", forceLoad: true);
+    }
+}

@@ -1,0 +1,122 @@
+﻿@page "/temario/tema2"
+@inject NavigationManager Navigation
+
+<h2 class="titulo-tema">Tema 2: Phishing</h2>
+
+<div class="seccion">
+    <p>
+        El phishing representa una grave amenaza a la seguridad digital. No solo expone información personal y financiera, sino que facilita accesos no autorizados, robo de datos y pérdidas económicas. Comprender cómo funciona es vital para evitar ser víctima.
+    </p>
+</div>
+
+<div class="seccion">
+    <h4>¿Cómo funciona el phishing?</h4>
+    <ul>
+        <li><strong>Enlaces Maliciosos:</strong> Sitios falsos que imitan los oficiales.</li>
+        <li><strong>Archivos Adjuntos:</strong> Contienen malware.</li>
+        <li><strong>Urgencia:</strong> Presión psicológica para actuar sin pensar.</li>
+    </ul>
+</div>
+
+<div class="seccion">
+    <h4>Tipos comunes de phishing</h4>
+    <ul>
+        <li>Mensajes inesperados</li>
+        <li>Amenazas o urgencias</li>
+        <li>Remitentes sospechosos</li>
+        <li>Errores ortográficos o gramaticales</li>
+        <li>Enlaces engañosos</li>
+        <li>Adjuntos maliciosos</li>
+        <li>Solicitudes de datos confidenciales</li>
+        <li>Imitación de páginas oficiales</li>
+    </ul>
+</div>
+
+<div class="seccion">
+    <h4>¿Qué hacer si fuiste víctima?</h4>
+    <ul>
+        <li>Cambia tus contraseñas</li>
+        <li>Ejecuta un antivirus</li>
+        <li>Reporta el incidente</li>
+        <li>Notifica al servicio afectado</li>
+        <li>Monitorea actividad sospechosa</li>
+    </ul>
+</div>
+
+<div class="seccion-video">
+    <h5>Tutorial en video:</h5>
+    <div class="ratio ratio-16x9">
+        <iframe src="https://www.youtube.com/embed/UuuAlP7ay6U" title="Phishing" allowfullscreen></iframe>
+    </div>
+</div>
+
+<div class="seccion-evaluacion">
+    <h5>¿Listo para evaluar lo aprendido?</h5>
+    <button class="btn-evaluacion" @onclick="IrAEvaluacion">
+        Realizar Evaluación
+    </button>
+</div>
+
+@code {
+    private void IrAEvaluacion()
+    {
+        Navigation.NavigateTo("/evaluacion/tema2");
+    }
+}
+
+<style>
+    .titulo-tema {
+        text-align: center;
+        color: #1a4faa;
+        margin-top: 20px;
+        font-weight: bold;
+    }
+
+    .seccion, .seccion-video, .seccion-evaluacion {
+        max-width: 900px;
+        margin: 1rem auto;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+        text-align: justify;
+    }
+
+    .seccion {
+        background-color: rgba(240, 248, 255, 0.9);
+        border-left: 5px solid #1a4faa;
+    }
+
+    .seccion-video {
+        background-color: rgba(221, 255, 221, 0.9);
+        border-left: 5px solid #2e8b57;
+    }
+
+    .seccion-evaluacion {
+        background-color: rgba(255, 255, 240, 0.9);
+        border-left: 5px solid #ffcc00;
+        text-align: center;
+    }
+
+    .btn-evaluacion {
+        background-color: #ffcc00;
+        color: #000;
+        border: none;
+        padding: 0.7rem 1.5rem;
+        border-radius: 6px;
+        font-weight: bold;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        .btn-evaluacion:hover {
+            background-color: #e6b800;
+        }
+
+    iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        border-radius: 6px;
+    }
+</style>
