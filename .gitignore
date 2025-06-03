@@ -1,0 +1,50 @@
+# Visual Studio
+.vs/
+.vscode/
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+bin/
+obj/
+out/
+publish/
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+project.lock.json
+project.fragment.lock.json
+
+# DotCover
+.idea/
+*.dotCover
+
+# Rider
+.idea/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Backup & temp files
+*.bak
+*.tmp
+*.swp
+*.sln.docstates
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Azure artifacts (if accidentally generated)
+*.azurepubxml
+*.PublishSettings
